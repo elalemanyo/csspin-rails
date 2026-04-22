@@ -96,4 +96,30 @@ class CsspinCssFallbackCandidatesTest < Minitest::Test
       "https://cdn.jsdelivr.net/npm/bootstrap/bootstrap.min.css"
     ], builder.for(package)
   end
+
+  def test_uses_css_files_from_jsdelivr_file_tree
+    package = Csspin::PackageSpec.parse("sourdough-toast")
+    builder = Csspin::CssFallbackCandidates.new(
+      metadata_client: FakeMetadataClient.new(
+        {
+          "files" => [
+            {
+              "type" => "directory",
+              "name" => "src",
+              "files" => [
+                {"type" => "file", "name" => "sourdough-toast.css"},
+                {"type" => "file", "name" => "sourdough-toast.js"}
+              ]
+            }
+          ]
+        }
+      )
+    )
+
+    assert_equal [
+      "https://cdn.jsdelivr.net/npm/sourdough-toast/src/sourdough-toast.css",
+      "https://cdn.jsdelivr.net/npm/sourdough-toast/dist/css/sourdough-toast.min.css",
+      "https://cdn.jsdelivr.net/npm/sourdough-toast/sourdough-toast.min.css"
+    ], builder.for(package)
+  end
 end
