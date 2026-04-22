@@ -14,9 +14,9 @@ module Csspin
         metadata_path_for(metadata, "default"),
         conventional_path_for(package_spec, "dist/css/"),
         conventional_path_for(package_spec)
-      ].compact.map { normalize_path(it, package_spec.full_name) }
+      ].compact.map { |path| normalize_path(path, package_spec.full_name) }
         .uniq
-        .map { candidate_url_for(it, package_spec.full_name) }
+        .map { |path| candidate_url_for(path, package_spec.full_name) }
     end
 
     private
