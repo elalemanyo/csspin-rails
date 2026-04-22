@@ -1,5 +1,7 @@
 # csspin-rails
 
+[![CI](https://github.com/elalemanyo/csspin-rails/actions/workflows/ci.yml/badge.svg)](https://github.com/elalemanyo/csspin-rails/actions/workflows/ci.yml)
+
 Pin CSS packages from npm into a Rails app's `vendor/assets/stylesheets` — without Node.js.
 
 Works like [importmap-rails](https://github.com/rails/importmap-rails), but for CSS. Packages are fetched from [jsDelivr](https://www.jsdelivr.com/).
