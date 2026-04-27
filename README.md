@@ -74,6 +74,17 @@ bundle exec standardrb
 bundle exec rake test
 ```
 
+### Releasing
+
+This repo publishes via GitHub Actions when you push a tag matching `v*` (see `.github/workflows/release.yml`).
+
+1. Update `lib/csspin/version.rb`
+2. Run `bundle exec rake test` (and any linting you want)
+3. Commit
+4. Tag: `git tag vX.Y.Z`
+5. Push commit: `git push origin HEAD`
+6. Push tag: `git push origin vX.Y.Z`
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

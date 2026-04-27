@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.description = "A CLI tool to pin CSS packages from npm (via jsDelivr) into a Rails app's vendor/assets/stylesheets without Node.js."
   spec.homepage = "https://github.com/elalemanyo/csspin-rails"
   spec.license = "MIT"
-  spec.files = Dir["lib/**/*", "exe/*", "README*"]
+  spec.files = Dir["lib/**/*", "exe/*", "README*", "CHANGELOG*"]
   spec.bindir = "exe"
   spec.executables = ["csspin"]
   spec.require_paths = ["lib"]
