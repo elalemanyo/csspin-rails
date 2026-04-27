@@ -30,7 +30,10 @@ module Csspin
           return 1
         end
 
-        saved_path = @writer.write(package_name: spec.package_name, content: result[:body])
+        css = Csspin::CssImportsInliner
+          .new(downloader: @downloader)
+          .inline(result[:body], base_url: result[:url], import_stack: [result[:url]])
+        saved_path = @writer.write(package_name: spec.package_name, content: css)
 
         snippet_package = File.basename(saved_path, ".css")
 

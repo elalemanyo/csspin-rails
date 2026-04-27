@@ -272,4 +272,66 @@ class CsspinCommandsPinTest < Minitest::Test
     assert_equal ["bootstrap"], fallback_candidates.requested_for
     assert_includes error_io.string, "Unable to download CSS from jsDelivr for bootstrap"
   end
+
+  def test_inlines_relative_css_imports
+    base_url = "https://cdn.jsdelivr.net/npm/@37signals/lexxy/dist/stylesheets/lexxy.css"
+    resolver = FakeResolver.new([base_url])
+    downloader = FakeDownloader.new([
+      {ok: true, body: "@import url(\"lexxy-content.css\");\n@import url(\"lexxy-editor.css\");\n"},
+      {ok: true, body: "/* content */\n"},
+      {ok: true, body: "/* editor */\n"}
+    ])
+    writer = FakeWriter.new("vendor/assets/stylesheets/lexxy.css")
+    printer = FakePrinter.new
+    error_io = StringIO.new
+    fallback_candidates = NullFallbackCandidates.new
+
+    code = Csspin::Commands::Pin.new(
+      resolver: resolver,
+      downloader: downloader,
+      writer: writer,
+      printer: printer,
+      error_io: error_io,
+      fallback_candidates: fallback_candidates
+    ).run(input: "@37signals/lexxy", root: ".", io: StringIO.new)
+
+    assert_equal 0, code
+    assert_equal [["lexxy", "/* content */\n/* editor */\n"]], writer.writes
+    assert_equal [
+      base_url,
+      "https://cdn.jsdelivr.net/npm/@37signals/lexxy/dist/stylesheets/lexxy-content.css",
+      "https://cdn.jsdelivr.net/npm/@37signals/lexxy/dist/stylesheets/lexxy-editor.css"
+    ], downloader.requested_urls
+  end
+
+  def test_inlines_nested_relative_css_imports
+    base_url = "https://cdn.jsdelivr.net/npm/@37signals/lexxy/dist/stylesheets/lexxy.css"
+    resolver = FakeResolver.new([base_url])
+    downloader = FakeDownloader.new([
+      {ok: true, body: "@import url(\"lexxy-content.css\");\n"},
+      {ok: true, body: "@import url(\"lexxy-variables.css\");\n/* content */\n"},
+      {ok: true, body: "/* variables */\n"}
+    ])
+    writer = FakeWriter.new("vendor/assets/stylesheets/lexxy.css")
+    printer = FakePrinter.new
+    error_io = StringIO.new
+    fallback_candidates = NullFallbackCandidates.new
+
+    code = Csspin::Commands::Pin.new(
+      resolver: resolver,
+      downloader: downloader,
+      writer: writer,
+      printer: printer,
+      error_io: error_io,
+      fallback_candidates: fallback_candidates
+    ).run(input: "@37signals/lexxy", root: ".", io: StringIO.new)
+
+    assert_equal 0, code
+    assert_equal [["lexxy", "/* variables */\n/* content */\n"]], writer.writes
+    assert_equal [
+      base_url,
+      "https://cdn.jsdelivr.net/npm/@37signals/lexxy/dist/stylesheets/lexxy-content.css",
+      "https://cdn.jsdelivr.net/npm/@37signals/lexxy/dist/stylesheets/lexxy-variables.css"
+    ], downloader.requested_urls
+  end
 end
