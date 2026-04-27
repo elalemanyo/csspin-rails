@@ -18,10 +18,10 @@ module Csspin
       css.each_line do |line|
         match = IMPORT_RE.match(line)
 
-        if match && relative_css_path?(match[:path]) && match[:media].to_s.strip.empty?
-          out << fetch_css(base_url, match[:path], import_stack)
+        out << if match && relative_css_path?(match[:path]) && match[:media].to_s.strip.empty?
+          fetch_css(base_url, match[:path], import_stack)
         else
-          out << line
+          line
         end
       end
 
