@@ -26,13 +26,13 @@ bundle install
 
 ```bash
 # Pin a package (latest version)
-bundle exec csspin pin trix
+bundle exec csspin pin sourdough-toast
 
 # Pin a specific version
-bundle exec csspin pin trix@2.0.0
+  bundle exec csspin pin sourdough-toast@2.0.7
 
 # Pin a scoped package
-bundle exec csspin pin @scope/package@1.2.3
+bundle exec csspin pin @37signals/lexxy
 ```
 
 CSS is saved to `vendor/assets/stylesheets/<package>.css`.
@@ -42,8 +42,8 @@ If you want `bin/csspin`, run `bundle binstubs csspin-rails` first.
 After pinning, the CLI prints integration snippets:
 
 ```
-Sprockets snippet: *= require trix
-Sass snippet: @import "trix";
+Sprockets snippet: *= require sourdough-toast
+Sass snippet: @import "sourdough-toast";
 ```
 
 ## CLI
