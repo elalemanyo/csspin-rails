@@ -1,6 +1,8 @@
 # csspin-rails
 
-[![CI](https://github.com/elalemanyo/csspin-rails/actions/workflows/ci.yml/badge.svg)](https://github.com/elalemanyo/csspin-rails/actions/workflows/ci.yml)
+![Gem Version](https://img.shields.io/gem/v/csspin-rails)
+![CI](https://github.com/elalemanyo/csspin-rails/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 Pin CSS packages from npm into a Rails app's `vendor/assets/stylesheets` — without Node.js.
 
